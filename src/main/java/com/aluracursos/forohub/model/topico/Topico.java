@@ -2,6 +2,7 @@ package com.aluracursos.forohub.model.topico;
 
 import java.time.LocalDateTime;
 
+import com.aluracursos.forohub.dto.topico.ActualizaTopicoDto;
 import com.aluracursos.forohub.dto.topico.RegistroTopicoDto;
 
 import jakarta.persistence.Entity;
@@ -42,5 +43,21 @@ public class Topico {
     this.status = "OK";
     this.nombreCurso = registroTopicoDto.nombreCurso();
     fechaCreacion =  LocalDateTime.now();
+  }
+
+  public void actualizaDatos(ActualizaTopicoDto actualizaTopicoDto) {
+    // throw new UnsupportedOperationException("Unimplemented method 'actualizaDatos'");
+    if (actualizaTopicoDto.titulo() != null) {
+      this.titulo = actualizaTopicoDto.titulo();
+    }
+    if (actualizaTopicoDto.mensaje() != null) {
+      this.mensaje = actualizaTopicoDto.mensaje();
+    }
+    if (actualizaTopicoDto.nombreCurso() != null) {
+      this.nombreCurso = actualizaTopicoDto.nombreCurso();
+    }
+    if (actualizaTopicoDto.status() != null) {
+      this.status = actualizaTopicoDto.status();
+    }
   }
 }
