@@ -39,7 +39,7 @@ public class TopicoController {
   @PostMapping
   @Transactional
   public ResponseEntity<RespuestaTopicoDto> registraTopico(@RequestBody @Valid RegistroTopicoDto registroTopicoDto, UriComponentsBuilder uriComponentsBuilder) {
-    System.out.println(registroTopicoDto);
+    // System.out.println(registroTopicoDto);
     var response = service.registraTopico(registroTopicoDto);
     // return ResponseEntity.ok(response);
     URI url = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(response.id()).toUri();
@@ -51,22 +51,22 @@ public class TopicoController {
     return ResponseEntity.ok(repository.findAll(paginacion).map(ListadoTopicoDto::new));
   }
 
-  @SuppressWarnings("rawtypes")
   @DeleteMapping("/{id}")
   @Transactional
-  public ResponseEntity eliminaTopico(@PathVariable Long id) {
+  public ResponseEntity<Object> eliminaTopico(@PathVariable Long id) {
     Topico topico = repository.getReferenceById(id);
     repository.delete(topico); // DELETE en BD
-    // topico.desactivaMedico(); // DELETE lógico
+    // topico.desactivaTopico(); // DELETE lógico
     return ResponseEntity.noContent().build(); // 204 No content
   }
 
-  @SuppressWarnings("rawtypes")
-  @PutMapping("/{id}")
+  // @PutMapping("/{id}")
+  @PutMapping
   @Transactional
-  public ResponseEntity actualizaTopico(@PathVariable Long id, @RequestBody @Valid ActualizaTopicoDto actualizaTopicoDto) throws RuntimeException {
+  // public ResponseEntity actualizaTopico(@PathVariable Long id, @RequestBody @Valid ActualizaTopicoDto actualizaTopicoDto) throws RuntimeException {
+  public ResponseEntity<RespuestaTopicoDto> actualizaTopico(@RequestBody @Valid ActualizaTopicoDto actualizaTopicoDto) throws RuntimeException {
     System.out.println(actualizaTopicoDto);
-    Topico topico = repository.getReferenceById(id);
+    Topico topico = repository.getReferenceById(actualizaTopicoDto.id());
     topico.actualizaDatos(actualizaTopicoDto);
     return ResponseEntity.ok(new RespuestaTopicoDto(
                               topico.getId(), 
@@ -74,5 +74,17 @@ public class TopicoController {
                               topico.getMensaje(),
                               topico.getFechaCreacion()
                             ));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<RespuestaTopicoDto> retornaDatosMedico(@PathVariable Long id) {
+    Topico topico = repository.getReferenceById(id);
+    var datosMedico = new RespuestaTopicoDto(
+                          topico.getId(), 
+                          topico.getTitulo(), 
+                          topico.getMensaje(),
+                          topico.getFechaCreacion()
+                          );
+    return ResponseEntity.ok(datosMedico);
   }
 }

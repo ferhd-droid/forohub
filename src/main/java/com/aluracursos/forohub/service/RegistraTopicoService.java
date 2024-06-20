@@ -10,6 +10,8 @@ import com.aluracursos.forohub.model.topico.Topico;
 import com.aluracursos.forohub.repository.TopicoRepository;
 import com.aluracursos.forohub.repository.UsuarioRepository;
 
+import jakarta.validation.Valid;
+
 @Service
 public class RegistraTopicoService {
   @Autowired
@@ -17,7 +19,7 @@ public class RegistraTopicoService {
   @Autowired
   private TopicoRepository topicoRepository;
 
-  public RespuestaTopicoDto registraTopico(RegistroTopicoDto registroTopicoDto) {
+  public RespuestaTopicoDto registraTopico(@Valid RegistroTopicoDto registroTopicoDto) {
     if (!usuarioRepository.findById(registroTopicoDto.idUsuario()).isPresent()) {
       throw new ValidacionDeIntegridad("Este id del usuario no fué encontrado");
     }
