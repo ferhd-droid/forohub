@@ -21,6 +21,7 @@ import com.aluracursos.forohub.dto.topico.RespuestaTopicoDto;
 import com.aluracursos.forohub.model.topico.Topico;
 import com.aluracursos.forohub.repository.TopicoRepository;
 import com.aluracursos.forohub.dto.topico.ActualizaTopicoDto;
+import com.aluracursos.forohub.dto.topico.DetalleTopicoDto;
 import com.aluracursos.forohub.dto.topico.ListadoTopicoDto;
 import com.aluracursos.forohub.dto.topico.RegistroTopicoDto;
 import com.aluracursos.forohub.service.RegistraTopicoService;
@@ -77,14 +78,17 @@ public class TopicoController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<RespuestaTopicoDto> retornaDatosMedico(@PathVariable Long id) {
+  public ResponseEntity<DetalleTopicoDto> retornaDatosTopico(@PathVariable Long id) {
     Topico topico = repository.getReferenceById(id);
-    var datosMedico = new RespuestaTopicoDto(
-                          topico.getId(), 
-                          topico.getTitulo(), 
-                          topico.getMensaje(),
-                          topico.getFechaCreacion()
-                          );
-    return ResponseEntity.ok(datosMedico);
+    var datosTopico = new DetalleTopicoDto(
+                                            topico.getId(),
+                                            topico.getIdUsuario(),
+                                            topico.getTitulo(),
+                                            topico.getMensaje(),
+                                            topico.getNombreCurso(),
+                                            topico.getStatus(),
+                                            topico.getFechaCreacion()
+                                          );
+    return ResponseEntity.ok(datosTopico);
   }
 }
